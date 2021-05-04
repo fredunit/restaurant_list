@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="text-center">
+    <h1 class="mb-4 mt-4">{{restaurant.name}}</h1>
+    <img class="rounded mb-4" src="{{restaurant.image}}" alt="Card image cap" style="max-height: 300px;">
+  </div>
+  <ul cla <div class="row">
+    <div class="col-12 col-md-10 col-lg-8 mx-auto">
+
+      <p>
+        <strong>評分:</strong>
+        {{restaurant.rating}}
+      </p>
+      <p>
+        <strong>分類:</strong>
+        {{restaurant.category}}
+      </p>
+      <p>
+        <strong>地址:</strong>
+        {{restaurant.location}}
+      </p>
+      <p>
+        <strong>電話:</strong>
+        {{restaurant.phone}}
+      </p>
+      <p>
+        <strong>地圖:</strong>
+        <a href="{{restaurant.google_map}}">{{restaurant.google_map}}</a>
+      </p>
+      <p>
+        <strong>描述:</strong>
+        {{restaurant.description}}
+      </p>
+    </div>
+</div>
+</div>
