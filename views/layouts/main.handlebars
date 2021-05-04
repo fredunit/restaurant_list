@@ -7,22 +7,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My favourite restaurant</title>
   <link rel="stylesheet" href="/stylesheets/bootstrap.css">
-  <link rel="stylesheet" href="/stylesheets/custom.css">
-
-</head>
-
-<body>
   <!-- navigation -->
   <nav class="navbar navbar-dark bg-dark">
     <div class="container d-flex justify-content-center">
       <a class="navbar-brand" href="/">Restaurant List</a>
+      <div>
+        <form action="/restaurants" method="GET">
+          <button class="create-btn" type="submit">加入餐廳</button>
+        </form>
+      </div>
     </div>
   </nav>
+</head>
+
+<body>
+
 
   <!-- partial templates will replace the part of "body" here -->
   {{{ body }}}
 
-
+  <script src="/javascripts/jquery-3.5.0.min.js"></script>
+  <script src="/javascripts/popper.min.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
 </body>
 
 </html>

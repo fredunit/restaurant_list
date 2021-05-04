@@ -4,8 +4,9 @@ const app = express()
 const port = 3000
 const exphbs = require('express-handlebars')
 const restaurantList = require('./restaurant.json').results
+const Restaurant = require('./models/restaurant')
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 db.on('error', () => {
@@ -26,12 +27,18 @@ app.use(express.static('public'))
 
 //routes setting
 app.get('/', (req, res) => {
-  res.render('index', {restaurants: restaurantList})
+  Restaurant.find()
+  .lean()
+  .then(restaurant => res.render('index', { restaurant }))
+  .catch(error => console.log(error))
 })
 
-app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
-  res.render('show', {restaurant: restaurant})
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+  .lean()
+  .then(restaurant => res.render('show', { restaurant }))
+  
 })
 
 app.get('/search', (req, res) => {
@@ -42,6 +49,18 @@ app.get('/search', (req, res) => {
     restaurant.name_en.toLowerCase().includes(keyword.toLowerCase())
   })
   res.render('index', {restaurants: restaurants})
+})
+
+//create
+app.get('/restaurants', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants/new', (req, res) => {
+  const restaurant= req.body
+  return Restaurant.create(restaurant)
+  .then(() => res.redirect('/'))
+  .catch(error => console.log(error))
 })
 
 //start and listen on the Express server

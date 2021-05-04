@@ -17,16 +17,24 @@
 
   <!--restaurant list-->
   <div class="row row-cols-3 g-4 p-4" id="data-panel">
-    {{#each restaurants}}
+    {{#each restaurant}}
     <div class="card-group">
       <div class="col mb-3">
         <div class="card h-100" style="width: 18rem;">
-          <a href="/restaurants/{{this.id}}" class="text-secondary">
+          <a href="/restaurants/{{this._id}}" class="text-secondary">
             <ul class="list-group list-group-flush text-center">
               <li class="list-group-item">{{this.name}}</li>
             </ul>
             <img src="{{this.image}}" class="card-img-top thumbnails" alt="Card image cap">
           </a>
+          <div class="card-footer">
+            <form action="/{{ this._id }}/edit" method="GET">
+              <button type="submit" class="edit-btn">Edit</button>
+            </form>
+            <form action="/{{ this._id }}/delete" method="POST">
+              <button type="submit" class="edit-btn" id="delete-btn">Delete</i></button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
