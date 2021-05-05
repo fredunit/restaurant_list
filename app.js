@@ -8,6 +8,7 @@ const Restaurant = require('./models/restaurant')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
+
 const db = mongoose.connection
 db.on('error', () => {
   console.log('mongodb error!')
@@ -24,6 +25,7 @@ app.set('view engine', 'handlebars')
 
 //setting static files
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }));
 
 //routes setting
 app.get('/', (req, res) => {
@@ -59,6 +61,42 @@ app.get('/restaurants', (req, res) => {
 app.post('/restaurants/new', (req, res) => {
   const restaurant= req.body
   return Restaurant.create(restaurant)
+  .then(() => res.redirect('/'))
+  .catch(error => console.log(error))
+})
+
+//edit and update restaurants
+app.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => { res.render('edit', restaurant) })
+    .catch(error => console.log(error))
+})
+
+app.post('/:id/edit/update', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = req.body.name
+      restaurant.category = req.body.category
+      restaurant.image = req.body.image
+      restaurant.loction = req.body.location
+      restaurant.phone = req.body.phone
+      restaurant.rating = req.body.rating
+      restaurant.google_map = req.body.google_map
+      restaurant.description = req.body.description
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
+})
+
+//delete
+app.post('/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+  .then(restaurant => restaurant.remove())
   .then(() => res.redirect('/'))
   .catch(error => console.log(error))
 })
